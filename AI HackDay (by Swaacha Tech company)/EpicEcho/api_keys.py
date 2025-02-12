@@ -1,2 +1,0 @@
-gemini_api ="AIzaSyCLHdQIb2okojZu5KU_fQNDZaqAQH9M0o4"
-flickr_api = "603e85347b744d39eff77d92425fe233"
