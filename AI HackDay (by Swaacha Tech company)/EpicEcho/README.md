@@ -10,8 +10,7 @@
 - **Team Lead**: Wagmare Sanjana 👩‍💻
 - **Team Members**:
   - Rangdal Pavansai 🧑‍💻
-  - Alladi Amay 🧑‍💻
-  - Raj Yadav 🧑‍💻
+  - Alladi Amay Raj Yadav 🧑‍💻
 
 <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Team Photo" width="400" height="200" />  
 *(Image Source: Unsplash - Team Collaboration)*
