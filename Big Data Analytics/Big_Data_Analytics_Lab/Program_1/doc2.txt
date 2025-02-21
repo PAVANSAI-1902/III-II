@@ -1,0 +1,2 @@
+MapReduce is a programming model.
+Big data processing is done using Hadoop.
