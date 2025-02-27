@@ -1,119 +1,72 @@
 import streamlit as st
 import google.generativeai as genai
+import api_keys  # Ensure you have your API key stored securely
 import requests
-import api_keys
+import random
 
-# Configure Gemini API
-GEMINI_API_KEY = api_keys.gemini_api  # Your Gemini API key
+# 🔑 Configure Free Gemini API
+GEMINI_API_KEY = api_keys.gemini_api  # Load API Key
 genai.configure(api_key=GEMINI_API_KEY)
 
-# Initialize Gemini model
-model = genai.GenerativeModel("gemini-pro")
+# ✅ Use a Free-Tier Model
+MODEL_NAME = "gemini-1.5-flash"  # Use "gemini-1.0-pro" if needed
 
-# Function to fetch an image of a historical place using Wikimedia Commons API
-def fetch_wikimedia_image(place_name):
-    url = "https://commons.wikimedia.org/w/api.php"
-    params = {
-        "action": "query",
-        "format": "json",
-        "list": "search",
-        "srsearch": place_name,
-        "srnamespace": "6",  # Search only in the file namespace (images)
-        "srlimit": "1"  # Fetch only the first result
-    }
-    response = requests.get(url, params=params).json()
-    
-    if response.get("query", {}).get("search"):
-        page_title = response["query"]["search"][0]["title"]
-        image_url = f"https://commons.wikimedia.org/wiki/Special:FilePath/{page_title.replace(' ', '_')}"
-        return image_url
-    return None
-
-# Function to generate a list of historical places in a given state
-def generate_historical_places(state):
+@st.cache_data
+def fetch_place_details(place_name, state, country):
+    prompt = f"""
+    Provide details about {place_name} in {state}, {country}:
+    - 🌜 A short historical narrative (100 words).
+    - 📚 Two interesting historical facts.
+    - 🚦 Traffic info (peak hours, best visit times).
+    - 📍 Location details.
+    """
     try:
-        prompt = f"List the top 5 most famous historical places in {state}, India. Provide only the names, separated by commas."
+        model = genai.GenerativeModel(MODEL_NAME)
         response = model.generate_content(prompt)
-        return response.text.split(", ")
+        return response.text if response.text else "No details available."
     except Exception as e:
-        st.warning(f"API quota exhausted or error occurred: {e}. Using fallback data.")
-        return FALLBACK_DATA.get(state, []) # type: ignore
+        return f"⚠️ Error retrieving details: {e}"
 
-# Function to generate a compelling narrative using Gemini API
-def generate_narrative(place_name, state):
+@st.cache_data
+def fetch_wikipedia_image(place_name):
     try:
-        prompt = f"Write a compelling narrative about the historical significance of {place_name} in {state}, India, in 100 words."
-        response = model.generate_content(prompt)
-        return response.text
+        url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{place_name.replace(' ', '_')}"
+        response = requests.get(url).json()
+        return response.get("thumbnail", {}).get("source", None)
     except Exception as e:
-        return f"Could not generate narrative due to API error: {e}"
+        return None
 
-# Function to generate facts about a historical place using Gemini API
-def generate_facts(place_name, state):
-    try:
-        prompt = f"Provide 2 interesting historical facts about {place_name} in {state}, India."
-        response = model.generate_content(prompt)
-        return response.text
-    except Exception as e:
-        return f"Could not generate facts due to API error: {e}"
-
-# Function to generate traffic information using Gemini API
-def generate_traffic_info(place_name, state):
-    try:
-        prompt = f"Provide traffic information for visitors to {place_name} in {state}, India. Include peak hours and recommendations."
-        response = model.generate_content(prompt)
-        return response.text
-    except Exception as e:
-        return f"Could not generate traffic info due to API error: {e}"
-
-# Streamlit App
+# 🌍 Run Streamlit App
 def main():
-    st.title("AI-Powered Historical Places Chatbot")
-    st.write("Discover fascinating historical places in India with compelling narratives!")
+    st.title("🏡 Historical Places Explorer")
+    st.write("🔍 Discover famous historical places!")
 
-    # User input
-    country = st.selectbox("Select Country", ["India"])
-    state = st.selectbox("Select State", ["Telangana", "Maharashtra"])
-
-    if st.button("Get Historical Places"):
-        # Generate a list of historical places in the given state
-        historical_places = generate_historical_places(state)
+    country = st.selectbox("🌐 Select Country", ["India", "USA"])
+    states_dict = {
+        "India": ["Telangana", "Maharashtra", "Tamil Nadu"],
+        "USA": ["NYC"]
+    }
+    state = st.selectbox("📍 Select State", states_dict[country])
+    
+    if st.button("🗺️ Get Details"):
+        st.subheader(f"🏢 Historical Places in {state}, {country}")
         
-        if historical_places:
-            st.subheader(f"Historical Places in {state}, {country}")
-            for place_name in historical_places:
-                st.markdown("---")
-                st.subheader(place_name)
+        places = {
+            "Telangana": ["Golconda Fort", "Charminar", "Qutb Shahi Tombs", "Chowmahalla Palace", "Mecca Masjid", "Falaknuma Palace", "Kakatiya Kala Thoranam", "Bhongir Fort", "Warangal Fort", "Taramati Baradari", "Ramappa Temple", "Thousand Pillar Temple", "Purani Haveli", "Paigah Tombs", "Khammam Fort"],
+            "Maharashtra": ["Gateway of India", "Ajanta Caves", "Ellora Caves", "Chhatrapati Shivaji Terminus", "Elephanta Caves", "Shaniwar Wada", "Raigad Fort", "Daulatabad Fort", "Siddhivinayak Temple", "Kanheri Caves", "Lal Mahal", "Jijamata Udyaan", "Karla Caves", "Pratapgad Fort", "Bibi Ka Maqbara"],
+            "Tamil Nadu": ["Brihadeeswarar Temple", "Mahabalipuram Shore Temple", "Meenakshi Temple", "Ramanathaswamy Temple", "Fort St. George", "Kapaleeshwarar Temple", "Thanjavur Palace", "Vivekananda Rock Memorial", "Gangaikonda Cholapuram", "Arjuna's Penance", "Kumbakonam Temples", "Srirangam Temple", "Rockfort Temple", "Thirumalai Nayakkar Mahal", "Ekambareswarar Temple"],
+            "NYC": ["Statue of Liberty", "Empire State Building", "Brooklyn Bridge", "Central Park", "Times Square", "Wall Street", "Ellis Island", "Grand Central Terminal", "Chrysler Building", "One World Trade Center", "Metropolitan Museum of Art", "St. Patrick's Cathedral", "Flatiron Building", "Rockefeller Center", "The High Line"]
+        }
 
-                # Generate and display narrative
-                narrative = generate_narrative(place_name, state)
-                st.write(f"📖 **Narrative:** {narrative}")
+        selected_places = random.sample(places.get(state, []), 6)
 
-                # Generate and display facts
-                facts = generate_facts(place_name, state)
-                st.write("📜 **Facts:**")
-                st.write(facts)
-
-                # Generate and display traffic information
-                traffic_info = generate_traffic_info(place_name, state)
-                st.write(f"🚶 **Traffic Info:** {traffic_info}")
-
-                # Fetch and display image from Wikimedia Commons
-                image_url = fetch_wikimedia_image(place_name)
-                if image_url:
-                    st.image(image_url, caption=f"Image of {place_name}")
-                else:
-                    st.write("🖼️ **Image not available**")
-
-                # Simulate location (using Gemini API)
-                location_prompt = f"Provide the location of {place_name} in {state}, India."
-                try:
-                    location_response = model.generate_content(location_prompt)
-                    st.write(f"📍 **Location:** {location_response.text}")
-                except Exception as e:
-                    st.write(f"📍 **Location:** Could not fetch location due to API error: {e}")
-        else:
-            st.error("No historical places found for the given state.")
+        for place in selected_places:
+            st.subheader(f"🏰 {place}")
+            image_url = fetch_wikipedia_image(place)
+            if image_url:
+                st.image(image_url, caption=place, use_container_width=True)
+            details = fetch_place_details(place, state, country)
+            st.write(details)
 
 if __name__ == "__main__":
     main()
