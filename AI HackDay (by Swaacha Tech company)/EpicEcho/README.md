@@ -13,7 +13,7 @@
   - Alladi Amay Raj Yadav 🧑‍💻
 
 <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Team Photo" width="400" height="200" />  
-*(Image Source: Unsplash - Team Collaboration)*
+<br>*(Image Source: Unsplash - Team Collaboration)*
 
 ---
 
@@ -47,7 +47,7 @@
 - **Scalability**: AI can generate content for thousands of historical places effortlessly. 🚀
 - **Accessibility**: Makes historical information more engaging and accessible to a wider audience. 🌍📖
 
-<img src="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Tourism Impact" width="600" height="300" />  
+<img src="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Tourism Impact" width="600" height="400" />  
 *(Image Source: Unsplash - Tourism Impact)*
 
 ---
@@ -100,7 +100,7 @@
 2. **Hotel Reservations**: Integration with platforms like Booking.com or MakeMyTrip. 🏨💻
 3. **Transportation**: Real-time traffic updates and cab booking options. 🚗🚦
 
-<img src="https://images.unsplash.com/photo-1528543606781-2f6e6857f318?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Tourism Services" width="600" height="300" />  
+<img src="https://images.unsplash.com/photo-1528543606781-2f6e6857f318?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Tourism Services" width="600" height="600" />  
 *(Image Source: Unsplash - Tourism Services)*
 
 ---
@@ -110,7 +110,7 @@
 2. **Future Vision**: Expand to global historical sites, add multilingual support, and integrate with tourism services. 🌐🚀
 3. **Call to Action**: Let’s revolutionize tourism with AI-powered storytelling! 🚀🤖✨
 
-<img src="https://images.unsplash.com/photo-1499678329028-101435549a4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Conclusion Banner" width="800" height="200" />  
+<img src="https://images.unsplash.com/photo-1499678329028-101435549a4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Conclusion Banner" width="800" height="400" />  
 *(Image Source: Unsplash - Conclusion Banner)*
 
 ---
