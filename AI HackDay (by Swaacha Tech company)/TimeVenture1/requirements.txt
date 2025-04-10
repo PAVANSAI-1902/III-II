@@ -1,0 +1,11 @@
+Flask
+python-dotenv
+google-generativeai
+requests
+huggingface_hub
+gTTS
+langdetect
+deep-translator
+folium
+streamlit-folium
+Flask-Caching
