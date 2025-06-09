@@ -1,4 +1,4 @@
-# 📚 III - Year II - Sem Repository
+# 📚 III - Year II - Semester Repository
 
 ![Education](https://mbaroi.in/blog/wp-content/uploads/2024/08/hardwork.gif)
 
